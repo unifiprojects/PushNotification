@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Subscription {
+	private final String username;
+
 	private final String endpoint;
 
 	private final Long expirationTime;
@@ -11,11 +13,16 @@ public class Subscription {
 	public final SubscriptionKeys keys;
 
 	@JsonCreator
-	public Subscription(@JsonProperty("endpoint") String endpoint, @JsonProperty("expirationTime") Long expirationTime,
-			@JsonProperty("keys") SubscriptionKeys keys) {
+	public Subscription(@JsonProperty("username") String username, @JsonProperty("endpoint") String endpoint,
+			@JsonProperty("expirationTime") Long expirationTime, @JsonProperty("keys") SubscriptionKeys keys) {
+		this.username = username;
 		this.endpoint = endpoint;
 		this.expirationTime = expirationTime;
 		this.keys = keys;
+	}
+
+	public String getUsername() {
+		return this.username;
 	}
 
 	public String getEndpoint() {
@@ -34,45 +41,42 @@ public class Subscription {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (this.endpoint == null ? 0 : this.endpoint.hashCode());
-		result = prime * result + (this.expirationTime == null ? 0 : this.expirationTime.hashCode());
-		result = prime * result + (this.keys == null ? 0 : this.keys.hashCode());
+		result = prime * result + ((endpoint == null) ? 0 : endpoint.hashCode());
+		result = prime * result + ((expirationTime == null) ? 0 : expirationTime.hashCode());
+		result = prime * result + ((keys == null) ? 0 : keys.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (obj == null)
 			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
 		Subscription other = (Subscription) obj;
-		if (this.endpoint == null) {
-			if (other.endpoint != null) {
+		if (endpoint == null) {
+			if (other.endpoint != null)
 				return false;
-			}
-		} else if (!this.endpoint.equals(other.endpoint)) {
+		} else if (!endpoint.equals(other.endpoint))
 			return false;
-		}
-		if (this.expirationTime == null) {
-			if (other.expirationTime != null) {
+		if (expirationTime == null) {
+			if (other.expirationTime != null)
 				return false;
-			}
-		} else if (!this.expirationTime.equals(other.expirationTime)) {
+		} else if (!expirationTime.equals(other.expirationTime))
 			return false;
-		}
-		if (this.keys == null) {
-			if (other.keys != null) {
+		if (keys == null) {
+			if (other.keys != null)
 				return false;
-			}
-		} else if (!this.keys.equals(other.keys)) {
+		} else if (!keys.equals(other.keys))
 			return false;
-		}
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
 		return true;
 	}
 
