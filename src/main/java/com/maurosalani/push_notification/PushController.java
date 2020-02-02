@@ -49,7 +49,7 @@ public class PushController {
 
 	private final CryptoService cryptoService;
 
-	private final Map<String, Subscription> subscriptions = new ConcurrentHashMap<>();
+	private final SubscriptionsHandler subscriptionsHandler = SubscriptionsHandler.getInstance();
 
 	private final HttpClient httpClient;
 
@@ -79,19 +79,20 @@ public class PushController {
 	@PostMapping("/subscribe")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void subscribe(@RequestBody Subscription subscription) {
-		Logger.getLogger(PushController.class.getName()).info("New Subscription: " + subscription.getEndpoint());
-		this.subscriptions.put(subscription.getEndpoint(), subscription);
+		Logger.getLogger(PushController.class.getName())
+				.info("Username: " + subscription.getUsername() + "just subscribed: " + subscription.getEndpoint());
+		subscriptionsHandler.subscribeUser(subscription);
 	}
 
 	@PostMapping("/unsubscribe")
 	public void unsubscribe(@RequestBody SubscriptionEndpoint subscription) {
 		Logger.getLogger(PushController.class.getName()).info("Unsubscription: " + subscription.getEndpoint());
-		this.subscriptions.remove(subscription.getEndpoint());
+		subscriptionsHandler.unsubscribeUser(subscription);
 	}
 
 	@PostMapping("/isSubscribed")
 	public boolean isSubscribed(@RequestBody SubscriptionEndpoint subscription) {
-		return this.subscriptions.containsKey(subscription.getEndpoint());
+		return subscriptionsHandler.isSubscribed(subscription);
 	}
 
 	@Scheduled(fixedDelay = 3000)
@@ -113,8 +114,8 @@ public class PushController {
 				Map<String, Object> value = (Map<String, Object>) jokeJson.get("value");
 				int id = (int) value.get("id");
 				String joke = (String) value.get("joke");
-		 	// <<<<<<<<<<<< EXAMPLE: retrieve joke from website <<<<<<<<<<<
-				
+				// <<<<<<<<<<<< EXAMPLE: retrieve joke from website <<<<<<<<<<<
+
 				sendPushMessageToAllSubscribers(this.subscriptions, new PushMessage("Chuck Norris Joke: " + id, joke));
 
 				Notification notification = new Notification("Chuck Norris Joke: " + id);
