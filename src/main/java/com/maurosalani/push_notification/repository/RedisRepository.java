@@ -52,17 +52,21 @@ public class RedisRepository {
 	}
 
 	public void unregisterUserByEndpoint(String endpoint) {
-		String username = sub_endpoint_username.get(endpoint);
-		topic_username.removeAll(username);
-		sub_endpoint_username.remove(endpoint);
-		username_subscription.remove(username);
+		if (sub_endpoint_username.containsKey(endpoint)) {
+			String username = sub_endpoint_username.get(endpoint);
+			topic_username.removeAll(username);
+			sub_endpoint_username.remove(endpoint);
+			username_subscription.remove(username);
+		}
 	}
-	
+
 	public void unregisterUserByUsername(String username) {
-		String endpoint = username_subscription.get(username).getEndpoint();
-		topic_username.removeAll(username);
-		sub_endpoint_username.remove(endpoint);
-		username_subscription.remove(username);
+		if (username_subscription.containsKey(username)) {
+			String endpoint = username_subscription.get(username).getEndpoint();
+			topic_username.removeAll(username);
+			sub_endpoint_username.remove(endpoint);
+			username_subscription.remove(username);
+		}
 	}
 
 	public boolean isSubscribed(String endpoint) {

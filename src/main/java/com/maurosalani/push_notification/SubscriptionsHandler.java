@@ -48,18 +48,19 @@ public class SubscriptionsHandler {
 
 	private final RedisRepository repository;
 
-	private SubscriptionsHandler() {
+	private SubscriptionsHandler(ServerKeys serverKeys) {
 		cryptoService = new CryptoService();
 		this.httpClient = HttpClient.newHttpClient();
-		this.serverKeys = new ServerKeys(new AppProperties(), cryptoService);
+		this.serverKeys = serverKeys;
 		this.objectMapper = new ObjectMapper();
 		this.jwtAlgorithm = Algorithm.ECDSA256(this.serverKeys.getPublicKey(), this.serverKeys.getPrivateKey());
 		this.repository = new RedisRepository();
+		Logger.getLogger(SubscriptionsHandler.class.getName()).info("SubscriptionsHandler has correctly been created");
 	}
 
-	public static SubscriptionsHandler getInstance() {
+	public static SubscriptionsHandler getInstance(ServerKeys serverKeys) {
 		if (subscriptionsHandlerInstance == null) {
-			subscriptionsHandlerInstance = new SubscriptionsHandler();
+			subscriptionsHandlerInstance = new SubscriptionsHandler(serverKeys);
 		}
 		return subscriptionsHandlerInstance;
 	}

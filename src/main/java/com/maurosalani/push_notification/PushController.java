@@ -18,10 +18,12 @@ public class PushController {
 
 	private final ServerKeys serverKeys;
 
-	private final SubscriptionsHandler subscriptionsHandler = SubscriptionsHandler.getInstance();
+	private final SubscriptionsHandler subscriptionsHandler;
 
 	public PushController(ServerKeys serverKeys, CryptoService cryptoService, ObjectMapper objectMapper) {
 		this.serverKeys = serverKeys;
+		subscriptionsHandler = SubscriptionsHandler.getInstance(serverKeys);
+		Logger.getLogger(PushController.class.getName()).info("PushController has correctly been created");
 	}
 
 	@GetMapping(path = "/publicSigningKey", produces = "application/octet-stream")
@@ -50,7 +52,10 @@ public class PushController {
 
 	@PostMapping("/isSubscribed")
 	public boolean isSubscribed(@RequestBody SubscriptionEndpoint subscription) {
-		return subscriptionsHandler.isSubscribed(subscription);
+		boolean isSubscribed = subscriptionsHandler.isSubscribed(subscription);
+		Logger.getLogger(PushController.class.getName())
+				.info("IsSubscribed: " + subscription.getEndpoint() + "\n" + isSubscribed);
+		return isSubscribed;
 	}
 
 }
