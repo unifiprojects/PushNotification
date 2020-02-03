@@ -40,7 +40,7 @@ public class PushController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public void subscribe(@RequestBody Subscription subscription) {
 		Logger.getLogger(PushController.class.getName())
-				.info("Username: " + subscription.getUsername() + "just subscribed: " + subscription.getEndpoint());
+				.info("Username: " + subscription.getUsername() + " subscribed: " + subscription.getEndpoint());
 		subscriptionsHandler.subscribeUser(subscription);
 	}
 
@@ -54,7 +54,7 @@ public class PushController {
 	public boolean isSubscribed(@RequestBody SubscriptionEndpoint subscription) {
 		boolean isSubscribed = subscriptionsHandler.isSubscribed(subscription);
 		Logger.getLogger(PushController.class.getName())
-				.info("IsSubscribed: " + subscription.getEndpoint() + "\n" + isSubscribed);
+				.info(isSubscribed + " = IsSubscribed: " + subscription.getEndpoint());
 		return isSubscribed;
 	}
 
