@@ -94,7 +94,7 @@ public class PushController {
 	public boolean isSubscribed(@RequestBody SubscriptionEndpoint subscription) {
 		return subscriptionsHandler.isSubscribed(subscription);
 	}
-
+/*
 	@Scheduled(fixedDelay = 3000)
 	public void chuckNorrisJoke() {
 		if (this.subscriptions.isEmpty()) {
@@ -152,10 +152,7 @@ public class PushController {
 		failedSubscriptions.forEach(subs::remove);
 	}
 
-	/**
-	 * @return true if the subscription is no longer valid and can be removed, false
-	 *         if everything is okay
-	 */
+
 	private boolean sendPushMessage(Subscription subscription, byte[] body) {
 		String origin = null;
 		try {
@@ -217,5 +214,5 @@ public class PushController {
 
 		return false;
 	}
-
+*/
 }
