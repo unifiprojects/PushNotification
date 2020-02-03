@@ -96,42 +96,22 @@ public class SubscriptionsHandler {
                                                        .map(username -> subscriptions.get(username))
                                                        .collect(Collectors.toList());
                 //invio messaggio
-                
+                if (this.subscriptions.isEmpty()) {
+                    return;
+                }
+                try {
+                    sendPushMessageToAllSubscribers(this.subscriptions, new PushMessage("Chuck Norris Joke: ", "test"));
+
+                    Notification notification = new Notification("Notification: ");
+                    notification.setBody("test");
+
+                    sendPushMessageToAllSubscribers(this.subscriptions, Map.of("notification", notification));
+                } catch (IOException e) {
+                    Logger.getLogger(PushController.class.getName()).info("fetch chuck norris" + e);
+                }
 	}
         
-        public void chuckNorrisJoke() {
-        if (this.subscriptions.isEmpty()) {
-            return;
-        }
-
-        try {
-            // >>>>>>>>>>>> EXAMPLE: retrieve joke from website >>>>>>>>>>>>
-            HttpResponse<String> response = this.httpClient.send(
-                    HttpRequest.newBuilder(URI.create("https://api.icndb.com/jokes/random")).build(),
-                    HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200) {
-                @SuppressWarnings("unchecked")
-                Map<String, Object> jokeJson = this.objectMapper.readValue(response.body(), Map.class);
-
-                @SuppressWarnings("unchecked")
-                Map<String, Object> value = (Map<String, Object>) jokeJson.get("value");
-                int id = (int) value.get("id");
-                String joke = (String) value.get("joke");
-                // <<<<<<<<<<<< EXAMPLE: retrieve joke from website <<<<<<<<<<<
-
-                sendPushMessageToAllSubscribers(this.subscriptions, new PushMessage("Chuck Norris Joke: " + id, joke));
-
-                Notification notification = new Notification("Chuck Norris Joke: " + id);
-                notification.setBody(joke);
-                notification.setIcon("assets/chuck.png");
-
-                sendPushMessageToAllSubscribers(this.subscriptions, Map.of("notification", notification));
-            }
-        } catch (IOException | InterruptedException e) {
-            Logger.getLogger(PushController.class.getName()).info("fetch chuck norris" + e);
-        }
-    }
-
+ 
     private void sendPushMessageToAllSubscribers(Map<String, Subscription> subs, Object message)
             throws JsonProcessingException {
 
