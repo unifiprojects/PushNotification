@@ -42,12 +42,21 @@ public class SubscriptionsHandler {
 	}
 
 	public void subscribeToTopic(String username, String topic) {
-		this.topic_username.put(topic, username);
+		this.topic_username.get(topic).add(username);
 	}
 
 	public void publishMessageForTopic(String message, String topic) {
 		// ottieni le subscription di tutti gli username iscritti al topic e invia loro un messaggio
-		topic_username.get(key)
+                
+                //ottengo la lista degli username associati ad un topic
+		List<String> usernames = topic_username.get(topic);
+                //ottendo le subscription dagli username
+                List<Subscription> subscription = usernames.stream()
+                                                       .map(username -> subscriptions.get(username))
+                                                       .collect(Collectors.toList());
+                //invio messaggio
+                
 	}
-
+        
+       
 }
