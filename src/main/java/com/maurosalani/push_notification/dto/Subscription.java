@@ -1,9 +1,16 @@
 package com.maurosalani.push_notification.dto;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Subscription {
+public class Subscription implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private final String username;
 
 	private final String endpoint;
