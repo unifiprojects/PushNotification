@@ -39,9 +39,15 @@ public class PushController {
 	@PostMapping("/subscribe")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void subscribe(@RequestBody Subscription subscription) {
-		Logger.getLogger(PushController.class.getName())
-				.info("Username: " + subscription.getUsername() + " subscribed: " + subscription.getEndpoint());
-		subscriptionsHandler.subscribeUser(subscription);
+		boolean isSubscribed = subscriptionsHandler.isSubscribed(new SubscriptionEndpoint(subscription.getEndpoint()));
+		if (!isSubscribed) {
+			Logger.getLogger(PushController.class.getName())
+					.info("Username: " + subscription.getUsername() + " subscribed: " + subscription.getEndpoint());
+			subscriptionsHandler.subscribeUser(subscription);
+		} else {
+			Logger.getLogger(PushController.class.getName())
+					.info(isSubscribed + " = IsSubscribed: " + subscription.getEndpoint());
+		}
 	}
 
 	@PostMapping("/unsubscribe")
@@ -53,8 +59,6 @@ public class PushController {
 	@PostMapping("/isSubscribed")
 	public boolean isSubscribed(@RequestBody SubscriptionEndpoint subscription) {
 		boolean isSubscribed = subscriptionsHandler.isSubscribed(subscription);
-		Logger.getLogger(PushController.class.getName())
-				.info(isSubscribed + " = IsSubscribed: " + subscription.getEndpoint());
 		return isSubscribed;
 	}
 
