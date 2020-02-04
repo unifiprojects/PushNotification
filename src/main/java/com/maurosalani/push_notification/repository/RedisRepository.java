@@ -54,7 +54,7 @@ public class RedisRepository {
 	public void unregisterUserByEndpoint(String endpoint) {
 		if (sub_endpoint_username.containsKey(endpoint)) {
 			String username = sub_endpoint_username.get(endpoint);
-			topic_username.removeAll(username);
+			removeUsernameFromTopics(username);
 			sub_endpoint_username.remove(endpoint);
 			username_subscription.remove(username);
 		}
@@ -63,9 +63,17 @@ public class RedisRepository {
 	public void unregisterUserByUsername(String username) {
 		if (username_subscription.containsKey(username)) {
 			String endpoint = username_subscription.get(username).getEndpoint();
-			topic_username.removeAll(username);
+			removeUsernameFromTopics(username);
 			sub_endpoint_username.remove(endpoint);
 			username_subscription.remove(username);
+		}
+	}
+
+	private void removeUsernameFromTopics(String username) {
+		for (String topic : topic_username.keySet()) {
+			if (topic_username.get(topic).contains(username)) {
+				topic_username.remove(topic, username);
+			}
 		}
 	}
 
