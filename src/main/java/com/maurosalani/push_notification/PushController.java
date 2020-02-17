@@ -20,7 +20,7 @@ public class PushController {
 
 	private final SubscriptionsHandler subscriptionsHandler;
 
-	public PushController(ServerKeys serverKeys, CryptoService cryptoService, ObjectMapper objectMapper) {
+	public PushController(ServerKeys serverKeys) {
 		this.serverKeys = serverKeys;
 		subscriptionsHandler = SubscriptionsHandler.getInstance(serverKeys);
 		Logger.getLogger(PushController.class.getName()).info("PushController has correctly been created");
