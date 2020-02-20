@@ -19,7 +19,6 @@ public class RedisRepository {
 	private final String SUB_ENDPOINT_USERNAME = "sub_endpoint_username";
 	final RMultimap<String, String> topic_username; // package scope for IT test
 	final RMap<String, Subscription> username_subscription; // package scope for IT test
-	final RMap<String, String> sub_endpoint_username; // package scope for IT test
 
 	public RedisRepository() {
 		Config config = new Config();
@@ -27,7 +26,6 @@ public class RedisRepository {
 		RedissonClient redisson = Redisson.create(config);
 		topic_username = redisson.getSetMultimap(TOPIC_USERNAME);
 		username_subscription = redisson.getMap(USERNAME_SUBSCRIPTION);
-		sub_endpoint_username = redisson.getMap(SUB_ENDPOINT_USERNAME);
 	}
 
 	public void subscribeUserToTopic(String topic, String username) {
@@ -48,14 +46,14 @@ public class RedisRepository {
 
 	public void registerUser(Subscription subscription) {
 		username_subscription.put(subscription.getUsername(), subscription);
-		sub_endpoint_username.put(subscription.getEndpoint(), subscription.getUsername());
 	}
 
 	public void unregisterUserByEndpoint(String endpoint) {
-		if (sub_endpoint_username.containsKey(endpoint)) {
-			String username = sub_endpoint_username.get(endpoint);
+                Subscription subscription = username_subscription.values().stream()
+                                    .filter(sub -> sub.getEndpoint().equals(endpoint)).findFirst().get();
+              	if (subscription != null) {
+			String username = subscription.getUsername();
 			removeUsernameFromTopics(username);
-			sub_endpoint_username.remove(endpoint);
 			username_subscription.remove(username);
 		}
 	}
@@ -64,7 +62,6 @@ public class RedisRepository {
 		if (username_subscription.containsKey(username)) {
 			String endpoint = username_subscription.get(username).getEndpoint();
 			removeUsernameFromTopics(username);
-			sub_endpoint_username.remove(endpoint);
 			username_subscription.remove(username);
 		}
 	}
@@ -78,7 +75,10 @@ public class RedisRepository {
 	}
 
 	public boolean isSubscribed(String endpoint) {
-		return sub_endpoint_username.containsKey(endpoint);
+            
+                boolean isSubscribed = username_subscription.values().stream()
+                    .anyMatch(sub -> sub.getEndpoint().equals(endpoint));
+		return isSubscribed;
 	}
 
 	public String getPORT() {

@@ -20,7 +20,6 @@ public class RedisRepositoryIT {
 		repository = new RedisRepository();
 		repository.topic_username.clear();
 		repository.username_subscription.clear();
-		repository.sub_endpoint_username.clear();
 	}
 
 	@Test
@@ -43,12 +42,12 @@ public class RedisRepositoryIT {
 	public void testRegisterOfNewUserSubscription() {
 		Subscription subscription1 = new Subscription("user1", "endpoint1", 1L, new SubscriptionKeys("a", "a"));
 		repository.registerUser(subscription1);
-		assertThat(repository.sub_endpoint_username.get("endpoint1")).isEqualTo("user1");
+		assertThat(repository.username_subscription.get("user1")).isEqualTo(subscription1);
 
 		Subscription subscription2 = new Subscription("user2", "endpoint1", 1L, new SubscriptionKeys("a", "a"));
 
 		repository.registerUser(subscription2);
-		assertThat(repository.sub_endpoint_username.get("endpoint1")).isEqualTo("user2");
+		assertThat(repository.username_subscription.get("user2")).isEqualTo(subscription2);
 	}
 
 	@Test
