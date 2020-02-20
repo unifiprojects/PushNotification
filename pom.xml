@@ -10,9 +10,9 @@
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.maurosalani</groupId>
-  <artifactId>PushNotificationSpring</artifactId>
+  <artifactId>PushNotification</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>PushNotificationSpring</name>
+  <name>PushNotification</name>
   <description>Demo project for Spring Boot</description>
 
   <properties>
