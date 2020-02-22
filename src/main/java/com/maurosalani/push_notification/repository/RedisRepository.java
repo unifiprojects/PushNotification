@@ -1,4 +1,4 @@
-package com.maurosalani.push_notification.repository;
+ package com.maurosalani.push_notification.repository;
 
 import java.util.Collection;
 
@@ -16,7 +16,6 @@ public class RedisRepository {
 	private final String URL = "redis://127.0.0.1:";
 	private final String TOPIC_USERNAME = "topic_username";
 	private final String USERNAME_SUBSCRIPTION = "username_subscription";
-	private final String SUB_ENDPOINT_USERNAME = "sub_endpoint_username";
 	final RMultimap<String, String> topic_username; // package scope for IT test
 	final RMap<String, Subscription> username_subscription; // package scope for IT test
 
