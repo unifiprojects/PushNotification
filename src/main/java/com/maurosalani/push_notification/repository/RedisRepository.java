@@ -59,7 +59,6 @@ public class RedisRepository {
 
 	public void unregisterUserByUsername(String username) {
 		if (username_subscription.containsKey(username)) {
-			String endpoint = username_subscription.get(username).getEndpoint();
 			removeUsernameFromTopics(username);
 			username_subscription.remove(username);
 		}
