@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maurosalani.push_notification.dto.Subscription;
 import com.maurosalani.push_notification.dto.SubscriptionEndpoint;
 
+import javax.ws.rs.*;
+
+
 public class PushController {
 
 	private final ServerKeys serverKeys;
@@ -20,7 +23,7 @@ public class PushController {
 
     @GET
 	@Path("publicSigningKey")
-        @Produces("application/octet-stream")
+    @Produces("application/octet-stream")
 	public byte[] publicSigningKey() {
 		return this.serverKeys.getPublicKeyUncompressed();
 	}
