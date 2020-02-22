@@ -1,10 +1,5 @@
 package com.maurosalani.push_notification;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-
-@ConfigurationProperties("app")
-@Component
 public class AppProperties {
 
 	private String serverPublicKeyPath;

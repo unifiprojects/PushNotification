@@ -13,9 +13,6 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class ServerKeys {
 
 	private final AppProperties appProperties;

@@ -31,14 +31,9 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.springframework.stereotype.Component;
-
 /**
  * This class is necessary to encrypt the payload of the push notification
- * 
- *
  */
-@Component
 public class CryptoService {
 
 	private final SecureRandom SECURE_RANDOM = new SecureRandom();
